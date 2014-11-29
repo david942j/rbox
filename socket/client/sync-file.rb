@@ -8,8 +8,9 @@ class SyncFile
   end
 
   def self.exec(msg) #exec msg from server
-    if msg[:action]=='request'
+    if msg[:action] == 'request'
       file_name = $main_dir+msg[:data][:file_name]
+      p "exec request #{file_name}"
       return error("server request #{file_name} not exists.") if !File.exists?(file_name)
       self.send_file(file_name)
     else
@@ -18,15 +19,21 @@ class SyncFile
   end
 
   def self.send_file(file_name)
+    #p file_name.rm_main
+    return false if $file_data[file_name.rm_main].nil? #TODO
+    modify_time = File.atime(file_name).asctime
+    return false if $file_data[file_name.rm_main][:time] >= modify_time
+    $file_data[file_name.rm_main][:time] = modify_time
     hash = {
       :action => 'update',
       :data => {
         :file_name => file_name.rm_main,
         :file => File.open(file_name, "rb") {|io| io.read },
-        :time => File.atime(file_name).asctime
+        :time => modify_time
       }
     }
-    RbSocket.send(hash)
+    return RbSocket.send(hash)
+    #sleep(2)
   end
 
   def self.update_file(file_name)

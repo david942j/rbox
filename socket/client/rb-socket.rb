@@ -1,11 +1,13 @@
 require 'sync-file'
 require 'socket'
 require '../server/util'
+require 'thread'
 
 $ip = File.read('../IP')[0...-1]
 $port = 12456
 class RbSocket
   @@s = nil
+  @@lock = Mutex.new
   def self.connect
     return if @@s !=nil && !@@s.closed?
     @@s = TCPSocket.new($ip, $port)
@@ -19,10 +21,12 @@ class RbSocket
   def self.send(data)
     self.connect
     sleep(0.02)
-    #print "sending #{data}\n"
+    #print "sending\n"
     str = YAML.dump(data)
-    Util.int_to_bytes(str.length).each{|c|@@s.write(c)}
-    @@s.write(str)
+    @@lock.synchronize{
+      @@s.write(Util.int_to_bytes(str.length).to_s+str)
+    }
+    return true
   end
 
   def self.read
