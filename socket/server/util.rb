@@ -1,7 +1,11 @@
 require 'yaml'
 $size_t = 4
-$batch_size = 0x1000
-
+$batch_size = 0x10000
+class String
+  def rm_main
+    return self[$main_dir.length..-1]
+  end
+end
 class Util
   def self.bytes_to_int(str)
     return str.bytes.inject(0){|s,c|s=(s<<8)+c;s}
@@ -14,7 +18,7 @@ class Util
   def self.gen_local_file_data(dir)
     hash = {}
     Dir[dir+"/**/*"].each do |file|
-      hash[file[$main_dir.length..-1]] = {:exists=>true, :time=>File.atime(file).asctime}
+      hash[file.rm_main] = {:exists=>true, :time=>File.atime(file).asctime}
     end
     return hash
   end

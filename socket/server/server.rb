@@ -40,10 +40,12 @@ class Server
         if obj[:exists]
           print "#{f} exists, time=#{obj[:time]}\n"
           self.request_file f,client if ! File.exists?($main_dir+f)
-        else
-          print "#{f} deleted, time=#{obj[:time]}\n"
         end
       }
+    elsif msg[:action] == 'update'
+      file_name = $main_dir+msg[:data][:file_name]
+      File.open(file_name, 'wb'){|f|f.write(msg[:data][:file])}
+      print "updated file #{file_name}\n"
     else
       raise
     end

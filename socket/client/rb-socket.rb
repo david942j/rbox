@@ -19,7 +19,7 @@ class RbSocket
   def self.send(data)
     self.connect
     sleep(0.02)
-    print "sending #{data}\n"
+    #print "sending #{data}\n"
     str = YAML.dump(data)
     Util.int_to_bytes(str.length).each{|c|@@s.write(c)}
     @@s.write(str)
