@@ -1,4 +1,9 @@
 require 'socket'
+require 'util'
+
+$debug = true
+$batch_size = 0x1000
+$main_dir = '../sync'
 class Server
   @@client = {}
   def self.start
@@ -7,19 +12,54 @@ class Server
       loop do
         client = @@s.accept
         @@client[client.object_id] = Thread.new do
-          loop do
-            break if client.closed?
-            str = client.recv(10)
-            break if str=="__close__"
-            p "get:#{str}"
-          end
-          p "client dead"
-          @@client.delete(client.object_id)
+          Server.listen client
         end
       end
     end
   end
 
+  def self.listen(client)
+    queue = ''
+    loop do
+      break if client.closed?
+      sleep(0.01)
+      queue += client.recv($batch_size)
+      msg = Util.parse_msg(queue)
+      next if msg === -1
+      p msg
+      break if msg[:action]=='close'
+      Server.exec(msg, client)
+    end
+    p "client dead"
+    @@client.delete(client.object_id)
+  end
+
+  def self.exec(msg, client)
+    if msg[:action] == 'init'
+      msg[:data].each{|f,obj|
+        if obj[:exists]
+          print "#{f} exists, time=#{obj[:time]}\n"
+          self.request_file f,client if ! File.exists?($main_dir+f)
+        else
+          print "#{f} deleted, time=#{obj[:time]}\n"
+        end
+      }
+    else
+      raise
+    end
+  end
+
+  def self.send(data, client)
+    return if client.closed?
+    print "sending #{data}\n"
+    str = YAML.dump(data)
+    Util.int_to_bytes(str.length).each{|c|client.write(c)}
+    client.write(str)
+  end
+
+  def self.request_file(f, client)
+    self.send({:action=>'request', :data=>{:file_name=>f}}, client)
+  end
 end
 
 def main

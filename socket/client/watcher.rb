@@ -7,7 +7,6 @@ class Watcher
   @@notifier = {}
   def self.register(dir) #register directory only
     p "registing #{dir}"
-    dir = File.expand_path(dir)
     return false if @@notifier[dir] != nil
     @@notifier[dir] = [INotify::Notifier.new]
     @@notifier[dir] << Thread.new do
@@ -27,18 +26,7 @@ class Watcher
             SyncFile.delete_file(file_name)
           end
         end
-        if $debug
-          flags.each do |flag|
-            flag = flag.to_s
-            p "flag = #{flag}"
-            #p event
-            puts case flag
-              when 'create' then "#{event.name} #{event.watcher.path} create"
-              when 'delete' then "#{event.name} delete"
-              when 'modify' then "#{event.name} change"
-            end
-          end
-        end
+        p event if $debug
       end
       @@notifier[dir][0].run
     end
