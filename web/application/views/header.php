@@ -3,6 +3,8 @@
 <title>rbox</title>
 <body style="background-color:#ffffff">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
 <?link_tag(css_url().'bootstrap2.3.2min.css');?>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 <?=link_tag(css_url().'layout.css');?>

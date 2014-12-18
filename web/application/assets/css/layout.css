@@ -1,12 +1,12 @@
 .layout{
-	width:980px;
-	height:600px;
+	width: 80%;
+	height: 100%;
 	margin:0px auto;
 	margin-top:41px;
 	position:relative;
 }
 .footer{
-	margin-top:10px;
+	margin-top:100px;
 	font-family:"Times New Roman","DFKai-sb";
 	color:#000000;
 	clear:both;
