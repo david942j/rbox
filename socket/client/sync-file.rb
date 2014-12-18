@@ -19,16 +19,17 @@ class SyncFile
   end
 
   def self.send_file(file_name)
-    #p file_name.rm_main
-    return false if $file_data[file_name.rm_main].nil? #TODO
-    modify_time = File.atime(file_name).asctime
-    return false if $file_data[file_name.rm_main][:time] >= modify_time
-    $file_data[file_name.rm_main][:time] = modify_time
+    modify_time = File.atime(file_name).asctime rescue nil
+    return false if modify_time.nil?
+    return false if $file_data[file_name.rm_main] != nil && $file_data[file_name.rm_main][:time] >= modify_time
+    $file_data[file_name.rm_main] = Util.file_data_hash(file_name)
+    file = File.open(file_name, "rb") {|io| io.read } rescue nil
+    return false if file.nil?
     hash = {
       :action => 'update',
       :data => {
         :file_name => file_name.rm_main,
-        :file => File.open(file_name, "rb") {|io| io.read },
+        :file => file,
         :time => modify_time
       }
     }

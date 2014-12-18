@@ -18,9 +18,13 @@ class Util
   def self.gen_local_file_data(dir)
     hash = {}
     Dir[dir+"/**/*"].each do |file|
-      hash[file.rm_main] = {:exists=>true, :time=>File.atime(file).asctime}
+      hash[file.rm_main] = Util.file_data_hash(file)
     end
     return hash
+  end
+
+  def self.file_data_hash(file)
+    return {:exists=>true, :time=>File.atime(file).asctime} rescue nil
   end
 
   def self.parse_msg(queue)

@@ -10,20 +10,20 @@ class Watcher
     return false if @@notifier[dir] != nil
     @@notifier[dir] = [INotify::Notifier.new]
     @@notifier[dir] << Thread.new do
-      @@notifier[dir][0].watch(dir, :create, :delete, :access) do |event|
+      @@notifier[dir][0].watch(dir, :create, :delete, :modify, :moved_from) do |event|
         flags = event.flags
         file_name = event.watcher.path+'/'+event.name
-        #p "#{event.name} #{flags}"
+        p "#{event.name} #{flags}"
         if flags.include?(:isdir) #directory
           if flags.include?(:create)
             Watcher.register(file_name)
-          elsif flags.include?(:delete)
+          elsif flags.include?(:delete) or flags.include?(:moved_from)
             Watcher.remove(file_name)
           end
         else #file
-          if flags.include?(:create) || flags.include?(:access)
-            p "send #{file_name} done" if SyncFile.send_file(file_name)
-          elsif flags.include?(:delete)
+          if flags.include?(:create) || flags.include?(:modify)
+            print "send #{file_name} done\n" if SyncFile.send_file(file_name)
+          elsif flags.include?(:delete) or flags.include?(:moved_from)
             SyncFile.delete_file(file_name)
           end
         end

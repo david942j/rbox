@@ -31,7 +31,7 @@ class Server
       break if msg[:action]=='close'
       Server.exec(msg, client)
     end
-    p "client dead"
+    print "client dead\n"
     @@client.delete(client.object_id)
   end
 
@@ -49,10 +49,10 @@ class Server
       @@cache_time[file_name] = msg[:data][:time]
       print "updated file \"#{file_name}\"...   "
       File.open(file_name, 'wb'){|f|f.write(msg[:data][:file])}
+      print "done\n"
     else
       raise
     end
-    print "done\n"
   end
 
   def self.send(data, client)
