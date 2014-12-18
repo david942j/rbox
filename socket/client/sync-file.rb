@@ -1,10 +1,33 @@
 require 'rb-socket'
 require '../server/util'
-$file_data = {}
 class SyncFile
+=begin
+  1. sync local file and local database
+  2. sync local to server
+  3. sync server to client
+=end
   def self.connect
-    $file_data = Util.gen_local_file_data($main_dir)
-    RbSocket.send({:action=>'init', :data=>$file_data})
+    self.sync_local_database_and_file
+    #step 3
+    RbSocket.send({:action=>'init', :data=>@@file_data})
+  end
+
+  def self.sync_local_database_and_file #detect file deleted or updated
+    db_data = $db.read_all #db remember
+    @@file_data = Util.gen_local_file_data($main_dir) #now
+    #step 1+2
+    db_data.each{|file,val|
+      if @@file_data[file].nil? #delete
+       self.delete_file($main_dir+file)
+      elsif @@file_data[file][:time] > db_data[file][:time] #update
+        self.update_file($main_dir+file)
+      end
+    }
+    @@file_data.each{|file,val|
+      if db_data[file].nil? #new
+        self.update_file($main_dir+file)
+      end
+    }
   end
 
   def self.exec(msg) #exec msg from server
@@ -21,10 +44,22 @@ class SyncFile
   def self.send_file(file_name)
     modify_time = File.atime(file_name).asctime rescue nil
     return error("modify_time is nil") if modify_time.nil?
-    return error("updated in 1 sec") if $file_data[file_name.rm_main] != nil && $file_data[file_name.rm_main][:time] >= modify_time
-    $file_data[file_name.rm_main] = Util.file_data_hash(file_name)
+    return error("updated in 1 sec") if @@file_data[file_name.rm_main] != nil && @@file_data[file_name.rm_main][:time] >= modify_time
     file = File.open(file_name, "rb") {|io| io.read } rescue nil
     return error("file #{file_name} not exists") if file.nil?
+    return self.do_send_file(file_name, file, modify_time)
+  end
+
+  def self.update_file(file_name) #update file no matter how
+    modify_time = File.atime(file_name).asctime rescue nil
+    return error("in update_file, modify_time is nil") if modify_time.nil?
+    file = File.open(file_name, "rb") {|io| io.read } rescue nil
+    return error("in update_file, file #{file_name} not exists") if file.nil?
+    return self.do_send_file(file_name, file, modify_time)
+  end
+
+  def self.do_send_file(file_name, file, modify_time) #pass all check
+    @@file_data[file_name.rm_main] = Util.file_data_hash(file_name)
     hash = {
       :action => 'update',
       :data => {
@@ -34,16 +69,10 @@ class SyncFile
       }
     }
     return RbSocket.send(hash)
-    #sleep(2)
-  end
-
-  def self.update_file(file_name)
-    #RbSocket.send(file_name)
-    raise
   end
 
   def self.delete_file(file_name)
-    $file_data.delete(file_name.rm_main)
+    @@file_data.delete(file_name.rm_main)
     hash = {
       :action => 'delete',
       :data => {
@@ -63,6 +92,7 @@ class SyncFile
   end
 
   def self.close
+    $db.write_all(@@file_data)
     RbSocket.send({:action=>'close'})
     RbSocket.close
   end

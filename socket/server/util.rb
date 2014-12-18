@@ -26,7 +26,7 @@ class Util
   end
 
   def self.file_data_hash(file)
-    return {:exists=>true, :time=>File.atime(file).asctime} rescue nil
+    return {:action=>:update, :time=>File.atime(file).asctime} rescue nil
   end
 
   def self.parse_msg(queue)

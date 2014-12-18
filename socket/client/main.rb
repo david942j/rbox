@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require 'watcher'
 $main_dir = '.'
+$db = Database.new('../client.db')
 def main
   SyncFile.connect
   Watcher.register($main_dir)
@@ -9,7 +10,7 @@ def main
   }
   loop{} 
   ensure
-    SyncFile.close 
+    SyncFile.close
 end
 
 main

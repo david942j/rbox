@@ -44,13 +44,11 @@ class Server
   def self.exec(msg, client)
     if msg[:action] == 'init'
       msg[:data].each{|f,obj|
-        if obj[:exists]
-          main_f = $main_dir+f
-          self.request_file f,client if !File.exists?(main_f) || 
-                                     @@file_manager[main_f].nil? ||
-                                     @@file_manager[main_f][:time] < obj[:time]
-          sleep(0.1)
-        end
+        main_f = $main_dir+f
+        self.request_file f,client if !File.exists?(main_f) || 
+                                   @@file_manager[main_f].nil? ||
+                                   @@file_manager[main_f][:time] < obj[:time]
+        sleep(0.1)
       }
     elsif msg[:action] == 'update'
       file_name = $main_dir+msg[:data][:file_name]
@@ -69,7 +67,7 @@ class Server
     end
   end
 
-  def self.manager(name,action,time)
+  def self.manager(name, action, time)
     @@file_manager[name] = {:action=>action, :time=>time}
   end
 

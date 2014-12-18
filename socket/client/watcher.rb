@@ -13,7 +13,7 @@ class Watcher
       @@notifier[dir][0].watch(dir, :create, :delete, :modify, :moved_from, :access) do |event|
         flags = event.flags
         file_name = event.watcher.path+'/'+event.name
-        p "#{event.name} #{flags}"
+        #p "#{event.name} #{flags}"
         if flags.include?(:isdir) #directory
           if flags.include?(:create)
             Watcher.register(file_name)
@@ -24,11 +24,11 @@ class Watcher
           if flags.include?(:create) || flags.include?(:modify) || flags.include?(:access)
             print "send #{file_name} done\n" if SyncFile.send_file(file_name)
           elsif flags.include?(:delete) or flags.include?(:moved_from)
-            SyncFile.delete_file(file_name)
+            print "delete #{file_name} done\n" if SyncFile.delete_file(file_name)
           end
         end
         p event if $debug
-      end
+      end 
       @@notifier[dir][0].run
     end
   end
