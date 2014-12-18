@@ -9,7 +9,7 @@ class SyncFile
   def self.connect
     self.sync_local_database_and_file
     #step 3
-    RbSocket.send({:action=>'init', :data=>@@file_data})
+    RbSocket.send({:action=>:init, :data=>@@file_data})
   end
 
   def self.sync_local_database_and_file #detect file deleted or updated
@@ -31,11 +31,24 @@ class SyncFile
   end
 
   def self.exec(msg) #exec msg from server
-    if msg[:action] == 'request'
+    if msg[:action] == :request
       file_name = $main_dir+msg[:data][:file_name]
       p "exec request #{file_name}"
       return error("server request #{file_name} not exists.") if !File.exists?(file_name)
       self.send_file(file_name)
+    elsif msg[:action] == :update
+      file_name = $main_dir+msg[:data][:file_name]
+      return if @@file_data[file_name.rm_main] != nil && @@file_data[file_name.rm_main][:time] >= msg[:data][:time]
+      print "Server ask: updating file \"#{file_name}\"...   "
+      File.open(file_name, 'wb'){|f|f.write(msg[:data][:file])}
+      print "done\n"
+      @@file_data[file_name.rm_main] = Util.file_data_hash(file_name)
+    elsif msg[:action] == :delete
+      file_name = $main_dir+msg[:data][:file_name]
+      print "Server ask: deleting file \"#{file_name}\"...   "
+      %x(rm #{file_name})
+      print "done\n"
+      @@file_data.delete(file_name.rm_main)
     else
       raise
     end
@@ -61,7 +74,7 @@ class SyncFile
   def self.do_send_file(file_name, file, modify_time) #pass all check
     @@file_data[file_name.rm_main] = Util.file_data_hash(file_name)
     hash = {
-      :action => 'update',
+      :action => :update,
       :data => {
         :file_name => file_name.rm_main,
         :file => file,
@@ -74,7 +87,7 @@ class SyncFile
   def self.delete_file(file_name)
     @@file_data.delete(file_name.rm_main)
     hash = {
-      :action => 'delete',
+      :action => :delete,
       :data => {
         :file_name => file_name.rm_main,
         :time => Time.now
@@ -93,7 +106,7 @@ class SyncFile
 
   def self.close
     $db.write_all(@@file_data)
-    RbSocket.send({:action=>'close'})
+    RbSocket.send({:action=>:close})
     RbSocket.close
   end
 end

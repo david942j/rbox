@@ -34,7 +34,7 @@ class Server
       msg = Util.parse_msg(queue)
       next if msg === -1
       p msg if $debug
-      break if msg[:action]=='close'
+      break if msg[:action]==:close
       Server.exec(msg, client)
     end
     print "client dead\n"
@@ -42,7 +42,7 @@ class Server
   end
 
   def self.exec(msg, client)
-    if msg[:action] == 'init'
+    if msg[:action] == :init
       msg[:data].each{|f,obj|
         main_f = $main_dir+f
         self.request_file f,client if !File.exists?(main_f) || 
@@ -50,15 +50,15 @@ class Server
                                    @@file_manager[main_f][:time] < obj[:time]
         sleep(0.1)
       }
-    elsif msg[:action] == 'update'
+    elsif msg[:action] == :update
       file_name = $main_dir+msg[:data][:file_name]
-      Server.manager(file_name,:update, msg[:data][:time])
+      Server.manager(file_name,:update, msg[:data][:time], msg, client)
       print "updating file \"#{file_name}\"...   "
       File.open(file_name, 'wb'){|f|f.write(msg[:data][:file])}
       print "done\n"
-    elsif msg[:action] == 'delete'
+    elsif msg[:action] == :delete
       file_name = $main_dir+msg[:data][:file_name]
-      Server.manager(file_name,:delete, msg[:data][:time])
+      Server.manager(file_name,:delete, msg[:data][:time], msg, client)
       print "deleting file \"#{file_name}\"...   "
       %x(rm #{file_name})
       print "done\n"
@@ -67,8 +67,13 @@ class Server
     end
   end
 
-  def self.manager(name, action, time)
+  def self.manager(name, action, time, msg, except)
     @@file_manager[name] = {:action=>action, :time=>time}
+    @@client.each{|object_id,_|
+      next if object_id == except.object_id
+      client = ObjectSpace._id2ref(object_id)
+      self.send(msg,client)
+    }
   end
 
   def self.send(data, client)
@@ -79,7 +84,7 @@ class Server
   end
 
   def self.request_file(f, client)
-    self.send({:action=>'request', :data=>{:file_name=>f}}, client)
+    self.send({:action=>:request, :data=>{:file_name=>f}}, client)
   end
 end
 
