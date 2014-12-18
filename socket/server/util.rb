@@ -1,4 +1,5 @@
 require 'yaml'
+require '../server/database'
 $size_t = 4
 $batch_size = 0x1000
 $port = 12456

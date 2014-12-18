@@ -5,9 +5,10 @@ require 'thread'
 
 $debug = false
 $main_dir = '../sync'
+$db = Database.new('rbox.db')
 class Server
   @@client = {}
-  @@cache_time = {}
+  @@file_manager = $db.read_all
   def self.start
     @@s = TCPServer.new $port
     loop do
@@ -16,6 +17,10 @@ class Server
         Server.listen client
       end
     end
+  end
+
+  def self.close
+    $db.write_all(@@file_manager)
   end
 
   def self.listen(client)
@@ -41,24 +46,31 @@ class Server
       msg[:data].each{|f,obj|
         if obj[:exists]
           main_f = $main_dir+f
-          self.request_file f,client if !File.exists?(main_f) || @@cache_time[main_f].nil? || @@cache_time[main_f] < obj[:time]
+          self.request_file f,client if !File.exists?(main_f) || 
+                                     @@file_manager[main_f].nil? ||
+                                     @@file_manager[main_f][:time] < obj[:time]
           sleep(0.1)
         end
       }
     elsif msg[:action] == 'update'
       file_name = $main_dir+msg[:data][:file_name]
-      @@cache_time[file_name] = msg[:data][:time]
+      Server.manager(file_name,:update, msg[:data][:time])
       print "updating file \"#{file_name}\"...   "
       File.open(file_name, 'wb'){|f|f.write(msg[:data][:file])}
       print "done\n"
     elsif msg[:action] == 'delete'
       file_name = $main_dir+msg[:data][:file_name]
+      Server.manager(file_name,:delete, msg[:data][:time])
       print "deleting file \"#{file_name}\"...   "
       %x(rm #{file_name})
       print "done\n"
     else
       raise
     end
+  end
+
+  def self.manager(name,action,time)
+    @@file_manager[name] = {:action=>action, :time=>time}
   end
 
   def self.send(data, client)
@@ -75,6 +87,8 @@ end
 
 def main
   Server.start
+ensure
+  Server.close
 end
 
 main
