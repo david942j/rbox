@@ -4,7 +4,6 @@ require '../server/util'
 require 'thread'
 
 $ip = File.read('../IP')[0...-1]
-$port = 12456
 class RbSocket
   @@s = nil
   @@lock = Mutex.new

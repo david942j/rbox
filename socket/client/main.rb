@@ -1,3 +1,4 @@
+#!/usr/bin/ruby
 require 'watcher'
 $main_dir = '.'
 def main

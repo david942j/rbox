@@ -1,3 +1,4 @@
+#!/usr/bin/ruby
 require 'socket'
 require 'util'
 require 'thread'
@@ -8,7 +9,7 @@ class Server
   @@client = {}
   @@cache_time = {}
   def self.start
-    @@s = TCPServer.new 12456
+    @@s = TCPServer.new $port
     loop do
       client = @@s.accept
       @@client[client.object_id] = Thread.new do
@@ -47,8 +48,13 @@ class Server
     elsif msg[:action] == 'update'
       file_name = $main_dir+msg[:data][:file_name]
       @@cache_time[file_name] = msg[:data][:time]
-      print "updated file \"#{file_name}\"...   "
+      print "updating file \"#{file_name}\"...   "
       File.open(file_name, 'wb'){|f|f.write(msg[:data][:file])}
+      print "done\n"
+    elsif msg[:action] == 'delete'
+      file_name = $main_dir+msg[:data][:file_name]
+      print "deleting file \"#{file_name}\"...   "
+      %x(rm #{file_name})
       print "done\n"
     else
       raise

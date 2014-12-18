@@ -1,6 +1,7 @@
 require 'yaml'
 $size_t = 4
 $batch_size = 0x1000
+$port = 12456
 class String
   def rm_main
     return self[$main_dir.length..-1]
@@ -40,4 +41,7 @@ class Util
     print msg+"\n"
     return false
   end
+end
+def error(msg)
+  Util.error(msg)
 end
