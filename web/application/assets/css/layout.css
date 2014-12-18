@@ -1,0 +1,18 @@
+.layout{
+	width:980px;
+	height:600px;
+	margin:0px auto;
+	margin-top:41px;
+	position:relative;
+}
+.footer{
+	margin-top:10px;
+	font-family:"Times New Roman","DFKai-sb";
+	color:#000000;
+	clear:both;
+	text-align:center;
+}
+#nav ul {
+    display: inline-block;
+    list-style-type: none;
+}
