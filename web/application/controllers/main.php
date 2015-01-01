@@ -10,8 +10,8 @@ class Main extends CI_Controller {
 	public function index() {
 		if($this->current_user()===FALSE)return ;
 		$this->data['user'] = $this->current_user();
-		$directory = '/home/root/sync/';
-		$this->data['files'] = array_diff(scandir($directory), array('..', '.'));
+		$this->data['files'] = $this->parse_files('/home/root/sync/');
+
 		$this->load->view('index', $this->data);
 	}
 
@@ -261,16 +261,22 @@ class Main extends CI_Controller {
 		return $ret;
 	}
 
-	private function get_ap_data() {
-		$data = $this->db->get('ap_list');
-		$ret = array();
-		foreach($data->result() as $row) {
-			$ret[] = array(
-				'ssid'=> $row->ssid,
-				'psk'=> $row->psk, 
-				'priority'=> $row->priority
-			);
-		}
-		return $ret;
+	private function parse_files($directory) {
+		$files = array_diff(scandir($directory), array('..', '.'));
+	  $ret = array();
+	  foreach($files as $file) {
+	  	$tmp = array();
+	  	$tmp['src'] = $directory.$file;
+	    $tmp['name'] = $file;
+	    $tmp['ext'] = pathinfo($tmp['src'],PATHINFO_EXTENSION);
+	    $tmp['modify_time'] = date ("F d Y H:i:s",filemtime($tmp['src']));
+	    if(is_image($tmp['ext']))
+	    	$tmp['base64'] = base64_encode(file_get_contents($tmp['src']));
+	    else {
+	    	
+	    }
+	    $ret[] = $tmp;
+	  }
+	  return $ret;
 	}
 }

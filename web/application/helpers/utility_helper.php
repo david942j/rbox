@@ -5,7 +5,7 @@ function assets_url(){
 function css_url(){
 	return assets_url().'css/';
 }
-function images_url(){
+function image_url(){
 	return assets_url().'images/';
 }
 function js_url(){

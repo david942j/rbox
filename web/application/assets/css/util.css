@@ -1,0 +1,28 @@
+img.thumb {
+  width: 32px;
+  height: 32px;
+  margin-right: 11px;
+  background-color: transparent;
+}
+.web_sprite {
+  background-image: url('/rbox/application/assets/images/web_sprites.png');
+  width: 32px;
+  height: 32px;
+  margin-top: -2px;
+  margin-right: 11px;
+  margin-left: -1px;
+  overflow: hidden;
+  background-color: transparent;
+}
+.web_sprite.sprite_code {
+  background-position: left -1502px;
+}
+.web_sprite.sprite_pdf {
+  background-position: left -1434px;
+}
+.web_sprite.sprite_text {
+  background-position: left -2216px;
+}
+.sprite_white {
+  background-position: left -1400px;
+}

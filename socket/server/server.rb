@@ -30,7 +30,7 @@ class Server
       break if client.closed?
       #sleep(0.01)
       #p 'dead '
-      queue += client.recv(0x1)
+      queue += client.recv(0x10)
       #p 'here'
       msg = Util.parse_msg(queue)
       next if msg === -1

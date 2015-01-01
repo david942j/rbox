@@ -9,13 +9,13 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 <?=link_tag(css_url().'layout.css');?>
 <?=link_tag(css_url().'login.css');?>
-<?=link_tag(css_url().'wire.css');?>
+<?=link_tag(css_url().'util.css');?>
 
 <script src="http://code.jquery.com/jquery.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 <script src="<?= js_url() ?>jquery.serialize-hash.js"></script>
 <? if(isset($user)) {?>
-<nav class="navbar navbar-inverse navbar-static-top" role="navigation">
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
