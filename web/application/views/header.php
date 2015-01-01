@@ -10,10 +10,12 @@
 <?=link_tag(css_url().'layout.css');?>
 <?=link_tag(css_url().'login.css');?>
 <?=link_tag(css_url().'util.css');?>
+<?=link_tag(css_url().'index.css');?>
 
 <script src="http://code.jquery.com/jquery.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 <script src="<?= js_url() ?>jquery.serialize-hash.js"></script>
+<script src="<?= js_url() ?>main.js"></script>
 <? if(isset($user)) {?>
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container-fluid">
@@ -110,7 +112,7 @@
 </div>
 -->
 <!-- modals -->
-<div id='import-modal' class="modal fade hide" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="false">
+<div id='file-detail-modal' class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">

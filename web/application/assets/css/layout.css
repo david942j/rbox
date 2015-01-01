@@ -7,11 +7,13 @@
 	position:relative;
 }
 .footer{
-	margin-top:100px;
+	position: fixed;
 	font-family:"Times New Roman","DFKai-sb";
-	color:#000000;
-	clear:both;
-	text-align:center;
+	color: #000000;
+	clear: both;
+	text-align: center;
+	bottom: 0px;
+	width: 100%;
 }
 #nav ul {
     display: inline-block;

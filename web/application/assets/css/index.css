@@ -1,0 +1,11 @@
+.file-list .filename:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+.file-list td:first:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+.file-list .file-row:hover .operation {
+  opacity: 1 !important;
+}

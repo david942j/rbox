@@ -14,15 +14,31 @@ img.thumb {
   overflow: hidden;
   background-color: transparent;
 }
-.web_sprite.sprite_code {
+.web_sprite_s {
+  background-image: url('/rbox/application/assets/images/web_sprites.png');
+  width: 19px;
+  height: 19px;
+  margin-top: -2px;
+  margin-right: 1px;
+  margin-left: -1px;
+  overflow: hidden;
+  background-color: transparent;
+}
+.sprite_code {
   background-position: left -1502px;
 }
-.web_sprite.sprite_pdf {
+.sprite_pdf {
   background-position: left -1434px;
 }
-.web_sprite.sprite_text {
+.sprite_text {
   background-position: left -2216px;
 }
 .sprite_white {
   background-position: left -1400px;
+}
+.sprite_delete {
+  background-position: left -9541px;
+}
+.sprite_download {
+  background-position: left -9562px;
 }

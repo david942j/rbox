@@ -269,11 +269,11 @@ class Main extends CI_Controller {
 	  	$tmp['src'] = $directory.$file;
 	    $tmp['name'] = $file;
 	    $tmp['ext'] = pathinfo($tmp['src'],PATHINFO_EXTENSION);
-	    $tmp['modify_time'] = date ("F d Y H:i:s",filemtime($tmp['src']));
+	    $tmp['modify_time'] = date ("Y/m/d H:i:s",filemtime($tmp['src'])+8*3600);
 	    if(is_image($tmp['ext']))
 	    	$tmp['base64'] = base64_encode(file_get_contents($tmp['src']));
 	    else {
-	    	
+
 	    }
 	    $ret[] = $tmp;
 	  }
