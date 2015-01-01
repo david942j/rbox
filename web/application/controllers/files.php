@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Download extends CI_Controller {
+class Files extends CI_Controller {
   function __construct(){
     parent::__construct();
     if (!$this->migration->current())
@@ -14,6 +14,13 @@ class Download extends CI_Controller {
     $data = file_get_contents("/home/root/sync/".$filename);
     if($data === FALSE) return;
     force_download($filename, $data);
+  }
+
+  public function delete() {
+    if($this->current_user()===FALSE)return ;
+    $filename = "/home/root/sync/".$_POST['file'];
+    if(file_exists($filename) === FALSE) return $this->load->view('ajax',array('message'=>'error'));
+    unlink($filename);
   }
 
   private function current_user() {
