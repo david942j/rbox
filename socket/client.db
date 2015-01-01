@@ -1,13 +1,16 @@
 --- 
-/sync-file.rb: 
+/zz.png: 
   :action: :update
-  :time: Thu Dec 18 21:46:23 2014
+  :time: Thu Jan  1 18:36:34 2015
 /rb-socket.rb: 
   :action: :update
-  :time: Thu Dec 18 21:46:23 2014
-/main.rb: 
-  :action: :update
-  :time: Thu Dec 18 21:46:23 2014
+  :time: Thu Jan  1 18:36:34 2015
 /watcher.rb: 
   :action: :update
-  :time: Thu Dec 18 21:46:23 2014
+  :time: Thu Jan  1 18:36:34 2015
+/sync-file.rb: 
+  :action: :update
+  :time: Thu Jan  1 18:36:34 2015
+/main.rb: 
+  :action: :update
+  :time: Thu Jan  1 18:36:34 2015

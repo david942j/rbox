@@ -1,5 +1,5 @@
 <?php include 'header.php'; ?>
-<form id="login" action='<?=site_url()?>/system/login' method="post">
+<form id="login" action='<?=site_url()?>/main/login' method="post">
     <h1>Log In</h1>
     <fieldset id="inputs">
         <input name="username" id="username" type="text" placeholder="Username" autofocus required>   

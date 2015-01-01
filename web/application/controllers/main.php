@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class System extends CI_Controller {
+class Main extends CI_Controller {
 	function __construct(){
 		parent::__construct();
 		if (!$this->migration->current())
@@ -10,10 +10,8 @@ class System extends CI_Controller {
 	public function index() {
 		if($this->current_user()===FALSE)return ;
 		$this->data['user'] = $this->current_user();
-		/*$db = $this->db->get('ap_list');
-		$this->data['db']=$db;
-		$this->data['tables'] = $this->db->list_tables();*/
-		$this->data['cpuinfo'] = file_get_contents('/proc/cpuinfo');
+		$directory = '/home/root/sync/';
+		$this->data['files'] = array_diff(scandir($directory), array('..', '.'));
 		$this->load->view('index', $this->data);
 	}
 
@@ -27,7 +25,7 @@ class System extends CI_Controller {
 		}
 		else {
 			$this->session->set_userdata(array('username'=>$username));
-			redirect('/system/index', 'refresh');
+			redirect('/main/index', 'refresh');
 		}
 	}
 

@@ -25,7 +25,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">rbox</a>
+      <a class="navbar-brand" href="#">Rbox</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -118,7 +118,7 @@
         <h4 class="modal-title">資料匯入</h4>
       </div>
       <div class="modal-body">
-        <form method="post" action="<?= site_url() ?>/system/import" enctype="multipart/form-data">
+        <form method="post" action="<?= site_url() ?>/main/import" enctype="multipart/form-data">
     <input type="file" name="userfile" size="20" />
     <br/><br/>
     <input class='btn btn-info' type="submit" value="upload"/>
@@ -139,7 +139,7 @@
         <h4 class="modal-title">修改密碼</h4>
       </div>
       <div class="modal-body">
-        <form id='change-password-form' role='form' method='post' action="<?=site_url()?>/system/change_password" data-remote="true">
+        <form id='change-password-form' role='form' method='post' action="<?=site_url()?>/main/change_password" data-remote="true">
           <div class="form-group">
           <label for="old_password">Old Password</label>
           <input name='old_password' type="password" class="form-control" id="old_password">

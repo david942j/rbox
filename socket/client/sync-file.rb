@@ -2,7 +2,7 @@ require 'rb-socket'
 require '../server/util'
 class SyncFile
 =begin
-  1. sync local file and local database
+  1. sync local file and local database 
   2. sync local to server
   3. sync server to client
 =end

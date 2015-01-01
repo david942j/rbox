@@ -20,6 +20,7 @@ class Server
   end
 
   def self.close
+    print "Closing... writting data#{@@file_manager}\n"
     $db.write_all(@@file_manager)
   end
 
@@ -29,7 +30,7 @@ class Server
       break if client.closed?
       #sleep(0.01)
       #p 'dead '
-      queue += client.recv(1)
+      queue += client.recv(0x1)
       #p 'here'
       msg = Util.parse_msg(queue)
       next if msg === -1
