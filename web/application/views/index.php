@@ -25,14 +25,16 @@
         </td>
         <td><?= to_file_type($file['ext']) ?></td>
         <td><?= $file['modify_time'] ?></td>
-        <td class='operation' style='opacity: 0.01'>
-          <span>
-            <img class='web_sprite_s sprite_download' src="<?= image_url().'icon_spacer.gif'?>"/>
-            下載
-          </span>
-          <span>
-            <img class='web_sprite_s sprite_delete' src="<?= image_url().'icon_spacer.gif'?>"/>
-            刪除
+        <td class='operation' style='opacity: 0.3'>
+          <a href="<?= site_url().'/download/get?file='.$file['name'] ?>">
+            <span class='button'>
+              <img class='web_sprite_s sprite_download' src="<?= image_url().'icon_spacer.gif'?>"/>
+              <span class='text-success'>下載</span>
+            </span>
+          </a>
+          <span class='button' onclick='deleteFile("<?= $file['name'] ?>")'>
+            <img  style='margin-left: 12px' class='web_sprite_s sprite_delete' src="<?= image_url().'icon_spacer.gif'?>"/>
+            <span class='text-danger'>刪除</span>
           </span>
         </td>
       </tr>

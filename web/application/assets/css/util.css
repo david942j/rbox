@@ -4,6 +4,10 @@ img.thumb {
   margin-right: 11px;
   background-color: transparent;
 }
+.button:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
 .web_sprite {
   background-image: url('/rbox/application/assets/images/web_sprites.png');
   width: 32px;
