@@ -21,6 +21,15 @@ class Files extends CI_Controller {
     $filename = "/home/root/sync/".$_POST['file'];
     if(file_exists($filename) === FALSE) return $this->load->view('ajax',array('message'=>'error'));
     unlink($filename);
+    $this->data['message'] = $this->send_change();
+    $this->load->view('ajax',$this->data);
+  }
+
+  private function send_change() {
+    $pid = intval(shell_exec("ps -A | grep 'server.rb' | sed -nr 's/.([^ ]+).*/\\1/p'"));
+    if($pid==0)return 'error';
+    posix_kill($pid, SIGUSR1);
+    return 'success';
   }
 
   private function current_user() {

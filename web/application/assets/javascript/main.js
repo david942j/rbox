@@ -6,6 +6,7 @@ function deleteFile(filename) {
   console.log('delete');
   $.post('index.php/files/delete', {file:filename},function(e) {
     if(e=='error')alert(e);
+    console.log(e);
     location.reload();
   });
   return true;

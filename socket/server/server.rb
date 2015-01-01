@@ -2,7 +2,7 @@
 require 'socket'
 require 'util'
 require 'thread'
-
+#I think I have bug on time make the file always think updated in 1 sec
 $debug = false
 $main_dir = '../sync'
 $db = Database.new('rbox.db')
@@ -77,6 +77,34 @@ class Server
     }
   end
 
+  def self.check_notify #detect all files deleted or upload
+    @@file_data = Util.gen_local_file_data($main_dir) #now
+    #delete
+    @@file_manager.each{|file_name,val|
+      print "oao #{file_name}\n"
+      if @@file_data[file_name.rm_main].nil? #delete
+        msg = {
+          :action => :delete,
+          :data => {
+            :file_name => file_name.rm_main,
+            :time => Time.now #Time.now is issue...
+          }
+        }
+        print "detect file #{file_name} delete\n"
+        self.manager(file_name,:delete, msg[:data][:time], msg, nil)
+      end
+    }
+    @@file_data.each{|file_name,val|
+      if @@file_manager[file_name].nil? #upload
+       # file_name = $main_dir+msg[:data][:file_name]
+       # Server.manager(file_name,:update, msg[:data][:time], msg, client)
+       # print "updating file \"#{file_name}\"...   "
+       # File.open(file_name, 'wb'){|f|f.write(msg[:data][:file])}
+       # print "done\n"
+      end
+    }
+  end
+
   def self.send(data, client)
     return if client.closed?
     print "sending #{data}\n"
@@ -94,5 +122,7 @@ def main
 ensure
   Server.close
 end
-
+Signal.trap("USR1") do
+  Server.check_notify
+end
 main
