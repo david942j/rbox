@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'watcher'
-$main_dir = '.'
+$main_dir = '../sync'
 $db = Database.new('../client.db')
 def main
   SyncFile.connect

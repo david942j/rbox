@@ -12,6 +12,11 @@
   overflow: auto;
   text-align: center;
 }
+#file-detail-modal .modal-body .text-detail {
+  width: 100%;
+  max-height: 500px;
+  overflow: auto;
+}
 #file-detail-modal .modal-title {
   display: inline;
 }
