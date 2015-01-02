@@ -8,17 +8,35 @@ class Files extends CI_Controller {
     $this->load->helper('download');
   }
 
+  public function detail() {
+    if($this->current_user()===FALSE)return ;
+    $filename = $_POST['file'];
+    if(file_exists($this->realpath($filename))  === FALSE) return;
+    $tmp = array(
+      'src' => $this->realpath($filename),
+      'name' => $filename,
+      'ext' => pathinfo($this->realpath($filename),PATHINFO_EXTENSION)
+      );
+    if(is_image($tmp['ext']))
+      $tmp['base64'] = base64_encode(file_get_contents($tmp['src']));
+    else {
+      
+    }
+    $this->data['file'] = $tmp;
+    $this->load->view('detail', $this->data);
+  }
+
   public function get() {
     if($this->current_user()===FALSE)return ;
     $filename = $_GET['file']; 
-    $data = file_get_contents("/home/root/sync/".$filename);// security issue: file=../../../etc/passwd
+    $data = file_get_contents($this->realpath($filename));
     if($data === FALSE) return;
     force_download($filename, $data);
   }
 
   public function delete() {
     if($this->current_user()===FALSE)return ;
-    $filename = "/home/root/sync/".$_POST['file']; // security issue: file=../../../etc/init.d
+    $filename = $this->realpath($_POST['file']);
     $this->data['message'] = $this->do_delete($filename);
     $this->load->view('ajax',$this->data);
   }
@@ -30,7 +48,9 @@ class Files extends CI_Controller {
   }
 
   /************************ private ***********************/
-
+  private function realpath($filename) {// security issue: file=../../../etc/init.d
+    return "/home/root/sync/".$filename; 
+  }
   private function do_delete($filename) {
     $pid = intval(shell_exec("ps -A | grep 'server.rb' | sed -nr 's/.([^ ]+).*/\\1/p'"));
     if($pid==0)return 'error';
