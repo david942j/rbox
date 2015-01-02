@@ -1,3 +1,12 @@
+.upload-btn {
+  cursor: pointer;
+  right: 2%;
+  position: relative;
+  text-align: right;
+}
+.upload-btn:hover {
+  text-decoration: underline;
+}
 .file-list .filename:hover {
   cursor: pointer;
   text-decoration: underline;

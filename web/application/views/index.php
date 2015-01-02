@@ -1,6 +1,10 @@
 <?php include 'header.php'; ?>
 <h3>檔案列表</h3>
-<div class='btn btn-default' data-toggle='modal' data-target='#upload-modal'>upload</div>
+<div class='upload-btn' data-toggle='modal' data-target='#upload-modal'>
+  <img class='web_sprite_s sprite_upload' src="<?= image_url().'icon_spacer.gif'?>"/>
+  <span>檔案上傳</span>
+</div>
+
 <div class='file-list'>
   <table class='table table-hover'>
     <thead>

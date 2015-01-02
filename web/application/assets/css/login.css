@@ -1,6 +1,6 @@
 body
 {
-    font: 12px 'Lucida Sans Unicode', 'Trebuchet MS', Arial, Helvetica;    
+    font: 12px Lato,sans-serif, "Times New Roman","DFKai-sb";
     margin: 0;
     background-color: #d9dee2;
     background-image: -webkit-gradient(linear, left top, left bottom, from(#ebeef2), to(#d9dee2));
