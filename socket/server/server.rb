@@ -89,6 +89,23 @@ class Server
     }
   end
 
+  def self.check_uploaded #detect all files uploaded
+    @@file_data = Util.gen_local_file_data($main_dir) #now
+    #uploaded
+    @@file_data.each{|file_name,val|
+      if @@file_manager[$main_dir+file_name].nil? || @@file_manager[$main_dir+file_name][:action]==:delete #new
+        print "find new file #{file_name}\n"
+
+        file_name = $main_dir+file_name
+        modify_time = File.atime(file_name).asctime rescue nil
+        file = File.open(file_name, "rb") {|io| io.read } rescue nil
+        
+        msg = Util.make_message(:update, file_name.rm_main, modify_time, file)
+        self.manager(file_name,:update, msg[:data][:time], msg, file)
+      end
+    }
+  end
+
   def self.send(data, client)
     return if client.closed?
     print "sending #{data}\n"

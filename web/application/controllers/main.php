@@ -25,7 +25,7 @@ class Main extends CI_Controller {
 		}
 		else {
 			$this->session->set_userdata(array('username'=>$username));
-			redirect('/main/index', 'refresh');
+			redirect('/', 'refresh');
 		}
 	}
 
