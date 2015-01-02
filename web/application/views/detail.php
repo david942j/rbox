@@ -4,7 +4,12 @@
   <?}else {?>
   "class":"<?= to_sprite_class($file['ext']) ?>",
   "spacer":"<?=image_url().'icon_spacer.gif'?>",
-  "content":<?= json_encode(file_get_contents($file['src'])) // crash with break line?>,
+    <? if(showable($file['src'])) {?>
+    "content":<?= json_encode(file_get_contents($file['src'])) ?>,
+    <? }else { ?>
+    "size": <?= filesize($file['src']) ?>,
+    "spacer128": "<?=image_url().'page_white.png'?>",
+    <? } ?>
   <? } ?>
   "name":"<?= $file['name'] ?>",
   "ext": "<?= $file['ext']?>"

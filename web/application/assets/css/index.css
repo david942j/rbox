@@ -7,6 +7,20 @@
 .upload-btn:hover {
   text-decoration: underline;
 }
+#file-detail-modal .modal-body .image-detail {
+  width: 100%;
+  overflow: auto;
+  text-align: center;
+}
+#file-detail-modal .modal-title {
+  display: inline;
+}
+#file-detail-modal .operation {
+  float: right;
+  position: relative;
+  right: 2%;
+  line-height: 19px;
+}
 .file-list .filename:hover {
   cursor: pointer;
   text-decoration: underline;

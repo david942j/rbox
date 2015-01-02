@@ -1,15 +1,14 @@
 .layout{
 	width: 80%;
 	height: 100%;
-	margin:0px auto;
+	margin: 0px auto;
 	padding-top: 50px;
-	margin-top:41px;
-	position:relative;
+	position: relative;
   font-family: Lato,sans-serif;
 }
 .footer{
 	position: fixed;
-	font-family: Lato,sans-serif, "Times New Roman","DFKai-sb";
+	font-family: Lato,sans-serif;
 	color: #000000;
 	clear: both;
 	text-align: center;

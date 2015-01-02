@@ -11,17 +11,30 @@ function is_image($ext) {
   return false;
 }
 function to_sprite_class($ext) {
-  switch($ext) {
+  switch(strtolower($ext)) {
     case 'rb':
     case 'cpp':
     case 'py':
     case 'java':
+    case 'php':
+    case 'sh':
       return 'code';
     case 'pdf': return 'pdf';
     case 'txt': return 'text';
   }
   return 'white';
 }
+function showable($filename) {
+  if(filesize($filename) > 0x10000)return false;//64K
+  $ext = pathinfo($filename, PATHINFO_EXTENSION);
+  switch(to_sprite_class($ext)) {
+    case 'code':
+    case 'text':
+      return true;
+  }
+  return false;
+}
+
 function to_file_type($ext) {
   switch(to_sprite_class($ext)) {
     case 'code':

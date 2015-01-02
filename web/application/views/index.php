@@ -28,7 +28,7 @@
         </td>
         <td><?= to_file_type($file['ext']) ?></td>
         <td><?= $file['modify_time'] ?></td>
-        <td class='operation' style='opacity: 0.3'>
+        <td file="<?= $file['name']?>" class='operation' style='opacity: 0.3'>
           <a href="<?= site_url().'/files/get?file='.$file['name'] ?>">
             <span class='button'>
               <img class='web_sprite_s sprite_download' src="<?= image_url().'icon_spacer.gif'?>"/>

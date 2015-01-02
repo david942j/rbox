@@ -77,6 +77,7 @@
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title"></h4>
+        <span class='operation'></span>
       </div>
       <div class="modal-body">
       </div>
