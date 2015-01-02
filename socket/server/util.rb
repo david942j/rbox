@@ -9,6 +9,18 @@ class String
   end
 end
 class Util
+  def self.make_message(action, file_name, time, file=nil)
+    msg = {
+      :action => action,
+      :data => {
+        :file_name => file_name,
+        :time => time
+      }
+    }
+    msg[:data][:file] = file if file != nil
+    return msg
+  end
+
   def self.bytes_to_int(str)
     return str.bytes.inject(0){|s,c|s=(s<<8)+c;s}
   end

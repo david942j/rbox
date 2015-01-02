@@ -73,27 +73,14 @@ class SyncFile
 
   def self.do_send_file(file_name, file, modify_time) #pass all check
     @@file_data[file_name.rm_main] = Util.file_data_hash(file_name)
-    hash = {
-      :action => :update,
-      :data => {
-        :file_name => file_name.rm_main,
-        :file => file,
-        :time => modify_time
-      }
-    }
-    return RbSocket.send(hash)
+    msg = Util.make_message(:update, file_name.rm_main, modify_time, file)
+    return RbSocket.send(msg)
   end
 
   def self.delete_file(file_name)
     @@file_data.delete(file_name.rm_main)
-    hash = {
-      :action => :delete,
-      :data => {
-        :file_name => file_name.rm_main,
-        :time => Time.now
-      }
-    }
-    return RbSocket.send(hash)
+    msg = Util.make_message(:delete, file_name.rm_main, Time.now)
+    return RbSocket.send(msg)
   end
 
   def self.update_dir(dir)
