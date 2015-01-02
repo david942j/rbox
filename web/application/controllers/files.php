@@ -23,17 +23,37 @@ class Files extends CI_Controller {
     $this->load->view('ajax',$this->data);
   }
 
+  public function upload() {
+    if($this->current_user()===FALSE)return ;
+    $this->data['message'] = $this->do_upload();
+    $this->load->view('ajax',$this->data);
+  }
+
+  /************************ private ***********************/
+
   private function do_delete($filename) {
     $pid = intval(shell_exec("ps -A | grep 'server.rb' | sed -nr 's/.([^ ]+).*/\\1/p'"));
     if($pid==0)return 'error';
     if(file_exists($filename) === FALSE)return 'error';
     unlink($filename);
-    return $this->send_change();
+    return $this->send_change('delete');
   }
-  private function send_change() {
+
+  private function do_upload() {
+    $pid = intval(shell_exec("ps -A | grep 'server.rb' | sed -nr 's/.([^ ]+).*/\\1/p'"));
+    if($pid==0)return 'error: server dead';
+
+    if($this->upload->do_upload('file')===FALSE)
+      return 'error:'.$this->upload->display_errors();
+    else 
+      return $this->send_change('update');
+  }
+
+  private function send_change($type) {
     $pid = intval(shell_exec("ps -A | grep 'server.rb' | sed -nr 's/.([^ ]+).*/\\1/p'"));
     if($pid==0)return 'error';
-    posix_kill($pid, SIGUSR1);
+    $map=array('delete'=>SIGUSR1, 'update'=>SIGUSR2);
+    posix_kill($pid, $map[$type]);
     return 'success';
   }
 

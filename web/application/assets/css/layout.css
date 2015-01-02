@@ -5,10 +5,11 @@
 	padding-top: 50px;
 	margin-top:41px;
 	position:relative;
+  font-family: Lato,sans-serif;
 }
 .footer{
 	position: fixed;
-	font-family:"Times New Roman","DFKai-sb";
+	font-family: Lato,sans-serif, "Times New Roman","DFKai-sb";
 	color: #000000;
 	clear: both;
 	text-align: center;

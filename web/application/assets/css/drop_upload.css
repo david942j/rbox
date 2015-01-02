@@ -1,0 +1,54 @@
+.drop_upload {
+  margin: 20px 20px;
+}
+.drop_upload h5 {
+  color: #1C1F1D;
+  font-weight: 400;
+  line-height: 1.2;
+  margin: 25px 0px 15px;
+}
+.drop_upload .filelist span.progress {
+  margin-bottom: 0px !important; /*override bootstrap*/
+}
+.drop_upload .filelists { 
+  margin: 20px 0; 
+}
+.drop_upload .filelists h5 { 
+  margin: 10px 0 0;
+}
+.drop_upload .filelist {
+  margin: 0;
+  padding: 10px 0;
+}
+.drop_upload .filelist li {
+  background: #fff;
+  border-bottom: 1px solid #eee; 
+  font-size: 14px; 
+  list-style: none; 
+  padding: 5px; 
+}
+.drop_upload .filelist li:before { 
+  display: none; 
+}
+.drop_upload .filelist li .file { 
+  color: #333; 
+}
+.drop_upload .filelist li .progress { 
+  color: #666;
+  float: right;
+  font-size: 10px; 
+  text-transform: uppercase;
+}
+.drop_upload .filelist li .delete {
+  color: red;
+  cursor: pointer;
+  float: right;
+  font-size: 10px;
+  text-transform: uppercase;
+}
+.drop_upload .filelist li.complete .progress {
+  color: green;
+}
+.drop_upload .filelist li.error .progress {
+  color: red;
+}

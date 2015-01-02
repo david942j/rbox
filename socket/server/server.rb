@@ -108,7 +108,7 @@ class Server
 
   def self.send(data, client)
     return if client.closed?
-    print "sending #{data}\n"
+    print "sending #{data[:action]} #{data[:data][:file_name]}\n"
     str = YAML.dump(data)
     client.write(Util.int_to_bytes(str.length).to_s+str)
   end

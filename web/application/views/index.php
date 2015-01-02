@@ -1,5 +1,6 @@
 <?php include 'header.php'; ?>
 <h3>檔案列表</h3>
+<div class='btn btn-default' data-toggle='modal' data-target='#upload-modal'>upload</div>
 <div class='file-list'>
   <table class='table table-hover'>
     <thead>

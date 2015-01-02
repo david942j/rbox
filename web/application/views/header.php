@@ -7,15 +7,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
 <?link_tag(css_url().'bootstrap2.3.2min.css');?>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+<?=link_tag(css_url().'jquery.fs.dropper.css');?>
 <?=link_tag(css_url().'layout.css');?>
 <?=link_tag(css_url().'login.css');?>
 <?=link_tag(css_url().'util.css');?>
 <?=link_tag(css_url().'index.css');?>
+<?=link_tag(css_url().'drop_upload.css');?>
 
+<script src="http://formstone.it/js/modernizr.js"></script>
 <script src="http://code.jquery.com/jquery.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 <script src="<?= js_url() ?>jquery.serialize-hash.js"></script>
+<script src="<?= js_url() ?>jquery.fs.dropper.js"></script>
 <script src="<?= js_url() ?>main.js"></script>
+<script src="<?= js_url() ?>drop_upload.js"></script>
+
 <? if(isset($user)) {?>
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container-fluid">
@@ -128,6 +134,16 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id='upload-modal' class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <?php include 'drop_upload.php'; ?>
       </div>
     </div>
   </div>
