@@ -1,9 +1,15 @@
 package com.david942j.rbox;
 
+import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.webkit.WebView;
+import android.webkit.WebSettings;
+import android.webkit.WebViewClient;
+import android.widget.Button;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -12,6 +18,23 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        WebView webview = (WebView) findViewById(R.id.meow);
+        WebSettings webSettings = webview.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setBuiltInZoomControls(true);
+        webSettings.setDefaultZoom(WebSettings.ZoomDensity.FAR);
+        webview.setBackgroundColor(Color.TRANSPARENT);
+        webview.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_INSET);
+
+        webview.loadUrl("http://www.google.com");
+        webview.setWebViewClient(new MyWebViewClient());
+    }
+    private class MyWebViewClient extends WebViewClient {
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            view.loadUrl (url);
+            return true;
+        }
     }
 
 
