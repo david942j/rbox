@@ -1,11 +1,19 @@
 package com.david942j.rbox;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.DownloadListener;
+import android.webkit.JsResult;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebSettings;
 import android.webkit.WebViewClient;
@@ -26,8 +34,18 @@ public class MainActivity extends ActionBarActivity {
         webview.setBackgroundColor(Color.TRANSPARENT);
         webview.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_INSET);
 
-        webview.loadUrl("http://www.google.com");
+        webview.loadUrl("http://192.168.1.22/rbox");
         webview.setWebViewClient(new MyWebViewClient());
+        webview.setDownloadListener(new DownloadListener() {
+            public void onDownloadStart(String url, String userAgent,
+                                        String contentDisposition, String mimetype,
+                                        long contentLength) {
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
+            }
+        });
+        webview.setWebChromeClient(new MyWebChromeClient());
     }
     private class MyWebViewClient extends WebViewClient {
         @Override
@@ -36,6 +54,36 @@ public class MainActivity extends ActionBarActivity {
             return true;
         }
     }
+    final Context myApp = this;
+    final class MyWebChromeClient extends WebChromeClient {
+        @Override
+        public boolean onJsConfirm(WebView view, String url, String message, final JsResult result) {
+            new AlertDialog.Builder(myApp)
+                    .setTitle("App Titler")
+                    .setMessage(message)
+                    .setPositiveButton(android.R.string.ok,
+                            new DialogInterface.OnClickListener()
+                            {
+                                public void onClick(DialogInterface dialog, int which)
+                                {
+                                    result.confirm();
+                                }
+                            })
+                    .setNegativeButton(android.R.string.cancel,
+                            new DialogInterface.OnClickListener()
+                            {
+                                public void onClick(DialogInterface dialog, int which)
+                                {
+                                    result.cancel();
+                                }
+                            })
+                    .create()
+                    .show();
+
+            return true;
+        }
+    }
+
 
 
     @Override
