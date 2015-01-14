@@ -42,7 +42,7 @@ class Files extends CI_Controller {
   }
 
   public function upload() {
-    if($this->current_user()===FALSE)return ;
+    //if($this->current_user()===FALSE)return ;
     $this->data['message'] = $this->do_upload();
     $this->load->view('ajax',$this->data);
   }

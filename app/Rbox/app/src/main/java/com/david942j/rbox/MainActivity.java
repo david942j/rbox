@@ -10,14 +10,12 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.webkit.DownloadListener;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebSettings;
 import android.webkit.WebViewClient;
-import android.widget.Button;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -46,6 +44,7 @@ public class MainActivity extends ActionBarActivity {
             }
         });
         webview.setWebChromeClient(new MyWebChromeClient());
+        startService(new Intent(this, UploadService.class));
     }
     private class MyWebViewClient extends WebViewClient {
         @Override
@@ -59,7 +58,7 @@ public class MainActivity extends ActionBarActivity {
         @Override
         public boolean onJsConfirm(WebView view, String url, String message, final JsResult result) {
             new AlertDialog.Builder(myApp)
-                    .setTitle("App Titler")
+                    .setTitle("Confirm")
                     .setMessage(message)
                     .setPositiveButton(android.R.string.ok,
                             new DialogInterface.OnClickListener()
@@ -88,23 +87,25 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        return false;
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+        //getMenuInflater().inflate(R.menu.menu_main, menu);
+        //return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        return false;
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        /*int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
 
-        return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(item);*/
     }
 }
