@@ -20,8 +20,8 @@ body
     background-image: -o-linear-gradient(top, #fff, #eee);
     background-image: linear-gradient(top, #fff, #eee);  
     height: 280px;
-    width: 400px;
-    margin: -150px 0 0 -230px;
+    width: 350px;
+    margin: -150px 0 0 -175px;
     padding: 30px;
     position: absolute;
     top: 50%;
@@ -125,7 +125,7 @@ fieldset
     background: #f1f1f1 url('../images/login-input-bg.png') no-repeat;
     padding: 15px 15px 15px 30px;
     margin: 0 0 10px 0;
-    width: 353px; /* 353 + 2 + 45 = 400 */
+    width: 303px; /* 353 + 2 + 45 = 400 */
     border: 1px solid #ccc;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;

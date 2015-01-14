@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
+<head>
 <title>rbox</title>
-<body style="background-color:#ffffff">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
@@ -25,6 +25,9 @@
 <script src="<?= js_url() ?>main.js"></script>
 <script src="<?= js_url() ?>drop_upload.js"></script>
 <script src="<?= js_url() ?>file_detail_manager.js"></script>
+
+</head>
+<body style="background-color:#ffffff">
 
 <? if(isset($user)) {?>
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
