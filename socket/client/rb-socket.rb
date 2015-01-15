@@ -20,8 +20,8 @@ class RbSocket
   def self.send(data)
     self.connect
     sleep(0.02)
-    str = YAML.dump(data)
-    print "sending\n"
+    str = data.inspect
+    print "sending #{str.length}\n"
     @@lock.synchronize{
       @@s.write(Util.int_to_bytes(str.length).to_s+str)
     }

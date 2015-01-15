@@ -55,7 +55,7 @@ class SyncFile
   end
 
   def self.send_file(file_name)
-    modify_time = File.atime(file_name).asctime rescue nil
+    modify_time = File.atime(file_name).to_i rescue nil
     return error("modify_time is nil") if modify_time.nil?
     return error("updated in 1 sec") if @@file_data[file_name.rm_main] != nil && @@file_data[file_name.rm_main][:time] >= modify_time
     file = File.open(file_name, "rb") {|io| io.read } rescue nil
@@ -64,7 +64,7 @@ class SyncFile
   end
 
   def self.update_file(file_name) #update file no matter how
-    modify_time = File.atime(file_name).asctime rescue nil
+    modify_time = File.atime(file_name).to_i rescue nil
     return error("in update_file, modify_time is nil") if modify_time.nil?
     file = File.open(file_name, "rb") {|io| io.read } rescue nil
     return error("in update_file, file #{file_name} not exists") if file.nil?

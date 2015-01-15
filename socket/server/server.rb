@@ -30,9 +30,9 @@ class Server
     queue = ''
     loop do
       break if client.closed?
-      #sleep(0.01)
+      sleep(0.01)
       #p 'dead '
-      queue += client.recv(0x10)
+      queue += client.recv($batch_size)
       #p 'here'
       msg = Util.parse_msg(queue)
       next if msg === -1
@@ -100,7 +100,7 @@ class Server
         print "find new file #{file_name}\n"
 
         file_name = $main_dir+file_name
-        modify_time = File.atime(file_name).asctime rescue nil
+        modify_time = File.atime(file_name).to_i rescue nil
         file = File.open(file_name, "rb") {|io| io.read } rescue nil
         
         msg = Util.make_message(:update, file_name.rm_main, modify_time, file)
@@ -112,9 +112,9 @@ class Server
   def self.send(data, client)
     return if client.closed?
     print "sending #{data[:action]} #{data[:data][:file_name]}\n"
-    str = YAML.dump(data)
+    str = data.inspect#YAML.dump(data)
     @@lock[client.object_id].synchronize{
-      client.write(Util.int_to_bytes(str.length).to_s+str)
+      client.send(Util.int_to_bytes(str.length).to_s+str,0)
     }
   end
 

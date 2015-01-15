@@ -1,7 +1,6 @@
-require 'yaml'
 require '../server/database'
 $size_t = 4
-$batch_size = 0x1000
+$batch_size = 0x100000
 $port = 12456
 class String
   def rm_main
@@ -14,7 +13,7 @@ class Util
       :action => action,
       :data => {
         :file_name => file_name,
-        :time => time
+        :time => time.to_i
       }
     }
     msg[:data][:file] = file if file != nil
@@ -38,7 +37,7 @@ class Util
   end
 
   def self.file_data_hash(file)
-    return {:action=>:update, :time=>File.atime(file).asctime} rescue nil
+    return {:action=>:update, :time=>File.atime(file).to_i} rescue nil
   end
 
   def self.parse_msg(queue)
@@ -47,7 +46,7 @@ class Util
     return -1 if queue.length < len+$size_t
     msg = queue[$size_t...(len+$size_t)]
     queue.slice!(0, len+$size_t)
-    return YAML.load(msg)
+    return eval(msg) #=^o w o^=
   end
 
   def self.error(msg)
