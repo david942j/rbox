@@ -8,11 +8,13 @@ $main_dir = '../sync'
 $db = Database.new('rbox.db')
 class Server
   @@client = {}
+  @@lock = {}
   @@file_manager = $db.read_all
   def self.start
     @@s = TCPServer.new $port
     loop do
       client = @@s.accept
+      @@lock[client.object_id] = Mutex.new
       @@client[client.object_id] = Thread.new do
         Server.listen client
       end
@@ -40,6 +42,7 @@ class Server
     end
     print "client dead\n"
     @@client.delete(client.object_id)
+    @@lock.delete(client.object_id)
   end
 
   def self.exec(msg, client)
@@ -110,7 +113,9 @@ class Server
     return if client.closed?
     print "sending #{data[:action]} #{data[:data][:file_name]}\n"
     str = YAML.dump(data)
-    client.write(Util.int_to_bytes(str.length).to_s+str)
+    @@lock[client.object_id].synchronize{
+      client.write(Util.int_to_bytes(str.length).to_s+str)
+    }
   end
 
   def self.request_file(f, client)

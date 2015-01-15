@@ -1,2 +1,4 @@
 socket/sync/
 .DS_Store
+socket/client.db
+
