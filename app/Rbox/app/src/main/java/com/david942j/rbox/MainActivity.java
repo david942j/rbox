@@ -44,7 +44,7 @@ public class MainActivity extends ActionBarActivity {
             }
         });
         webview.setWebChromeClient(new MyWebChromeClient());
-        startService(new Intent(this, UploadService.class));
+        //startService(new Intent(this, UploadService.class));
     }
     private class MyWebViewClient extends WebViewClient {
         @Override

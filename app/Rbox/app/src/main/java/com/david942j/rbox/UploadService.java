@@ -29,6 +29,7 @@ import java.io.File;
  */
 public class UploadService extends Service {
     final String path = Environment.getExternalStorageDirectory().toString()+"/DCIM/100MEDIA/";
+    MediaMonitor m;
     @Override
     public IBinder onBind(Intent intent) {
         return null;
@@ -36,9 +37,13 @@ public class UploadService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        MediaMonitor m = new MediaMonitor(path);
+        m = new MediaMonitor(path);
         m.startWatching();
         return START_STICKY;
+    }
+    @Override
+    public void onDestroy() {
+        m.stopWatching();
     }
     private void sendFile(String filename) {
         final String url = "http://192.168.1.22/rbox/index.php/files/upload";
