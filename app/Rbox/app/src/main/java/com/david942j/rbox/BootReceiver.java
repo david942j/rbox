@@ -17,11 +17,11 @@ public class BootReceiver extends BroadcastReceiver {
         NetworkInfo info = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
         if(info != null && info.isConnected()) {
             Log.w("OAO","start");
-            context.startService(new Intent(context, UploadService.class));
+            UploadService.sendFileInPreferences();
         }
         else {
-            Log.w("OAO","stop");
-            context.stopService(new Intent(context, UploadService.class));
+            //Log.w("OAO","stop");
+            //context.stopService(new Intent(context, UploadService.class));
         }
     }
 }
