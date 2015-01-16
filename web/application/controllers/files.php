@@ -65,8 +65,27 @@ class Files extends CI_Controller {
 
     if($this->upload->do_upload('file')===FALSE)
       return 'error:'.$this->upload->display_errors();
-    else 
-      return $this->send_change('update');
+    /*if($this->create_thumb($this->upload->data())===FALSE)
+      return 'error:'.(var_dump(gd_info())).$this->image_lib->display_errors();
+    $this->image_lib->clear();*/
+    return $this->send_change('update');
+  }
+
+  private function create_thumb($image_data) {
+    $this->load->library('image_lib');
+    $file_path = $image_data['full_path'];
+    $img_cfg=array();
+    $img_cfg['image_library'] = 'gd2';
+    $img_cfg['source_image'] = $file_path;
+    $img_cfg['maintain_ratio'] = TRUE;
+    $img_cfg['create_thumb'] = TRUE;
+    $img_cfg['new_image'] = $file_path;
+    $img_cfg['width'] = 100;
+    $img_cfg['height'] = 100;
+
+    $this->image_lib->initialize($img_cfg);
+    $ret= $this->image_lib->resize();
+    return $ret;
   }
 
   private function send_change($type) {
