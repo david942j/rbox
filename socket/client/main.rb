@@ -2,6 +2,7 @@
 require 'watcher'
 $main_dir = '../sync'
 $db = Database.new('../client.db')
+$meow = {}
 def main
   SyncFile.connect
   Watcher.register($main_dir)

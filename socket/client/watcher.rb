@@ -2,7 +2,6 @@ require 'rubygems'
 require 'rb-inotify'
 require 'sync-file'
 $debug = false
-
 class Watcher
   @@notifier = {}
   def self.register(dir) #register directory only
@@ -22,6 +21,7 @@ class Watcher
           end
         else #file
           if flags.include?(:create) || flags.include?(:modify) || flags.include?(:access)
+            $meow[file_name] = Time.now
             print "send #{file_name} done\n" if SyncFile.send_file(file_name)
           elsif flags.include?(:delete) or flags.include?(:moved_from)
             print "delete #{file_name} done\n" if SyncFile.delete_file(file_name)

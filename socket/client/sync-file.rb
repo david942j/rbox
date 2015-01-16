@@ -40,6 +40,10 @@ class SyncFile
       file_name = $main_dir+msg[:data][:file_name]
       return if @@file_data[file_name.rm_main] != nil && @@file_data[file_name.rm_main][:time] >= msg[:data][:time]
       print "Server ask: updating file \"#{file_name}\"...   "
+      if $meow[file_name] !=nil && $meow[file_name] > Time.now-5
+        print "ignore\n"
+        next
+      end
       File.open(file_name, 'wb'){|f|f.write(msg[:data][:file])}
       print "done\n"
       @@file_data[file_name.rm_main] = Util.file_data_hash(file_name)
@@ -57,7 +61,7 @@ class SyncFile
   def self.send_file(file_name)
     modify_time = File.atime(file_name).to_i rescue nil
     return error("modify_time is nil") if modify_time.nil?
-    return error("1 sec") if @@file_data[file_name.rm_main] != nil && @@file_data[file_name.rm_main][:time] >= modify_time
+    return error("1 sec") if @@file_data[file_name.rm_main] != nil && @@file_data[file_name.rm_main][:time]+2 >= modify_time
     file = File.open(file_name, "rb") {|io| io.read } rescue nil
     return error("file #{file_name} not exists") if file.nil?
     return self.do_send_file(file_name, file, modify_time)

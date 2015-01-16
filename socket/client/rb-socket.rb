@@ -34,7 +34,9 @@ class RbSocket
     loop do
       break if @@s.closed?
       sleep(0.01)
-      queue += @@s.recv($batch_size)
+      queue = @@s.read($size_t)
+      len = Util.bytes_to_int(queue[0...$size_t])
+      queue += @@s.read(len)
       msg = Util.parse_msg(queue)
       next if msg === -1
       SyncFile.exec(msg)
