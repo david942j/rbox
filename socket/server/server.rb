@@ -32,7 +32,9 @@ class Server
       break if client.closed?
       sleep(0.01)
       #p 'dead '
-      queue += client.recv($batch_size)
+      queue = client.read($size_t)
+      len = Util.bytes_to_int(queue[0...$size_t])
+      queue += client.read(len)
       #p 'here'
       msg = Util.parse_msg(queue)
       next if msg === -1
@@ -114,7 +116,7 @@ class Server
     print "sending #{data[:action]} #{data[:data][:file_name]}\n"
     str = data.inspect#YAML.dump(data)
     @@lock[client.object_id].synchronize{
-      client.send(Util.int_to_bytes(str.length).to_s+str,0)
+      client.write(Util.int_to_bytes(str.length).to_s+str)
     }
   end
 
